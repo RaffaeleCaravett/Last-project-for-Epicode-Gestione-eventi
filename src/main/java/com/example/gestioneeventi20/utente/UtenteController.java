@@ -60,7 +60,7 @@ public class UtenteController {
         return utenteService.findByIdAndUpdate(id, body);
     }
     @PatchMapping("/{eventId}/{id}")
-    @PreAuthorize("hasAuthority('UTENTE_NORMALE')")
+    @PreAuthorize("hasAnyAuthority('UTENTE_NORMALE','ORGANIZZATORE_DI_EVENTI')")
     public long BuyReservation(@PathVariable int id, @PathVariable int eventId) throws NotFoundException {
     eventoService.findById(eventId);
     if(eventoService.findById(eventId)!=null && eventoService.findById(eventId).getData().isAfter(LocalDate.now().minusDays(1))){

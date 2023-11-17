@@ -4,8 +4,6 @@ import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.example.gestioneeventi20.exceptions.BadRequestException;
 import com.example.gestioneeventi20.exceptions.NotFoundException;
-import com.example.gestioneeventi20.utente.Utente;
-import com.example.gestioneeventi20.utente.UtenteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -29,8 +27,12 @@ public class EventoService {
     private Cloudinary cloudinary;
 
     public Evento save(Evento body) throws IOException {
-        if(body.getUtenti().size()< body.getNumeroMassimoPartecipanti()){
+        if(body.getUtenti()!=null&&body.getUtenti().size()< body.getNumeroMassimoPartecipanti()){
             return eventoRepository.save(body);
+        }else if(body.getUtenti()==null){
+            return eventoRepository.save(body);
+        }else if (body.getData()==null||body.getDescrizione()==null||body.getLuogo()==null||body.getNumeroMassimoPartecipanti()==0||body.getTitolo()==null){
+            throw new BadRequestException("Body non valido");
         }else{
             throw new BadRequestException("L'evento ha già raggiunto un numero massimo di partecipanti");
         }
@@ -47,9 +49,10 @@ public class EventoService {
         return eventoRepository.findById(id).orElseThrow(() -> new NotFoundException(id));
     }
 
-    public void findByIdAndDelete(long id) throws NotFoundException {
+    public Evento findByIdAndDelete(long id) throws NotFoundException {
         Evento found = this.findById(id);
         eventoRepository.delete(found);
+        return found;
     }
 
     public Evento findByIdAndUpdate(long id, Evento body) throws NotFoundException {

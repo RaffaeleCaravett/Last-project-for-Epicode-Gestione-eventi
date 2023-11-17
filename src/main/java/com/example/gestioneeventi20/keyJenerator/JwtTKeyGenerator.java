@@ -5,6 +5,7 @@ import io.jsonwebtoken.security.Keys;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Properties;
 
 public class JwtTKeyGenerator {
@@ -23,7 +24,7 @@ public class JwtTKeyGenerator {
         Properties properties = new Properties();
         properties.setProperty("JWT_SECRET", key);
 
-        try (FileOutputStream fos = new FileOutputStream("env.properties")) {
+        try (OutputStream fos = new FileOutputStream("env.properties")) {
             properties.store(fos, "JWT Secret Key");
         } catch (IOException e) {
             e.printStackTrace();
