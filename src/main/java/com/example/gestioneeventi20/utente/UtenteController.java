@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/utente")
@@ -81,6 +82,28 @@ public class UtenteController {
         utenteService.findByIdAndDelete(id);
     }
 
+    @GetMapping("events/{id}")
+    @PreAuthorize("hasAnyAuthority('UTENTE_NORMALE','ORGANIZZATORE_DI_EVENTI')")
+    public List<Evento> getPersonalEvents(@PathVariable int id) throws NotFoundException {
+            Utente users = utenteService.findById(id);
+            if(users!=null){
+               return users.getEventi();
+            }else{
+                throw new NotFoundException(id);
+            }
+    }
 
+    @DeleteMapping("/{eventId}/{id}")
+    @PreAuthorize("hasAnyAuthority('UTENTE_NORMALE','ORGANIZZATORE_DI_EVENTI')")
+    public long DeleteAllReservation(@PathVariable int id, @PathVariable int eventId) throws NotFoundException {
+       utenteService.deleteAllReservations(id,eventId);
+       return id;
+    }
 
+    @DeleteMapping("/prenotazioni/{prenotazioneId}")
+    @PreAuthorize("hasAnyAuthority('UTENTE_NORMALE','ORGANIZZATORE_DI_EVENTI')")
+    public long DeleteAllReservation(@PathVariable int prenotazioneId) throws NotFoundException {
+        utenteService.deletePrenotazioneById(prenotazioneId);
+        return prenotazioneId;
+    }
 }

@@ -61,5 +61,13 @@ public class UtenteService {
                 .orElseThrow(() -> new Exception("Utente con email "+ email + " non trovato"));
     }
 
+    public long deleteAllReservations(int id,int eventId) {
+        utenteRepository.deletePrenotazioneByIds(id,eventId);
+        return id;
+    }
 
+    public long deletePrenotazioneById(int id) {
+        utenteRepository.deletePrenotazioneById(id);
+        return id;
+    }
 }
