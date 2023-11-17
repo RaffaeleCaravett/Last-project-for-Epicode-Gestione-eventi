@@ -32,9 +32,10 @@ public class SecurityConfig {
 
         // Aggiugo filtri custom
         http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(exceptionsHandlerFilter, JWTAuthFilter.class);
 
         // Aggiungo/rimuovo protezione sui singoli endpoint in maniera che venga/non venga richiesta l'autenticazione per accedervi
-        http.authorizeRequests().antMatchers("/**").permitAll();
+        http.authorizeRequests().antMatchers("/auth/**").permitAll().anyRequest().authenticated();;
         return http.build();
     }
     @Bean

@@ -16,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-@Table(name="utenti")
+@Table(name="eventi")
 @JsonIgnoreProperties({ "authorities", "enabled", "credentialsNonExpired", "accountNonExpired", "accountNonLocked"})
 public class Evento {
     @Id

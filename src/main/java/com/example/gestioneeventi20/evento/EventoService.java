@@ -2,6 +2,7 @@ package com.example.gestioneeventi20.evento;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import com.example.gestioneeventi20.exceptions.BadRequestException;
 import com.example.gestioneeventi20.exceptions.NotFoundException;
 import com.example.gestioneeventi20.utente.Utente;
 import com.example.gestioneeventi20.utente.UtenteRepository;
@@ -28,7 +29,12 @@ public class EventoService {
     private Cloudinary cloudinary;
 
     public Evento save(Evento body) throws IOException {
-        return eventoRepository.save(body);
+        if(body.getUtenti().size()< body.getNumeroMassimoPartecipanti()){
+            return eventoRepository.save(body);
+        }else{
+            throw new BadRequestException("L'evento ha già raggiunto un numero massimo di partecipanti");
+        }
+
     }
 
     public Page<Evento> getEventi(int page, int size, String orderBy) {

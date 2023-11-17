@@ -46,6 +46,9 @@ public class UtenteService {
     public Utente findByIdAndUpdate(long id, Utente body) throws NotFoundException {
         Utente found = this.findById(id);
         found.setEmail(body.getEmail());
+        if(body.getEventi()!=null){
+            found.setEventi(body.getEventi());
+        }
         return utenteRepository.save(found);
     }
 
