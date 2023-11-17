@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -23,14 +25,19 @@ public class Evento {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private long id;
+    @NotEmpty
     @Column(name="titolo")
     private String titolo;
+    @NotEmpty
     @Column(name="descrizione")
     private String descrizione;
+    @NotEmpty
     @Column(name="luogo")
     private String luogo;
+    @NotNull
     @Column(name="data")
     private LocalDate data;
+    @NotNull
     @Column(name="numero_massimo_partecipanti")
     private int numeroMassimoPartecipanti;
     @Column(name="img")
